@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#08070c">
+<title>Ahmed Today | Ultimate Edition</title>
+
+<style>
+:root{
+  --bg:#08070c;
+  --panel:#12101a;
+  --gold:#eac778;
+  --gold2:#fff0bd;
+  --muted:#b9afc0;
+  --line:rgba(234,199,120,.23);
+  --glass:rgba(255,255,255,.055);
+  --shadow:0 25px 80px rgba(0,0,0,.48);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{
+  margin:0;background:var(--bg);color:#fff;
+  font-family:Tahoma,Arial,sans-serif;line-height:1.85;
+  overflow-x:hidden;
+}
+button,input{font:inherit}
+button{cursor:pointer}
+button:focus-visible,a:focus-visible,input:focus-visible{
+  outline:2px solid var(--gold);outline-offset:4px;
+}
+::selection{background:var(--gold);color:#09070b}
+[hidden]{display:none!important}
+
+#space,#confetti{
+  position:fixed;inset:0;width:100%;height:100%;
+  pointer-events:none;
+}
+#space{z-index:-2}
+#confetti{z-index:1500}
+.aurora{
+  position:fixed;inset:-20%;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 15% 20%,#7041a322,transparent 42%),
+    radial-gradient(ellipse at 80% 25%,#eac77815,transparent 38%),
+    radial-gradient(ellipse at 50% 85%,#414b9a19,transparent 45%);
+  animation:aurora 20s ease-in-out infinite alternate;
+}
+#progress{
+  position:fixed;top:0;right:0;height:3px;width:0;z-index:2000;
+  background:linear-gradient(90deg,#fff4cb,#d29c45,#fff4cb);
+  box-shadow:0 0 15px #eac778;
+}
+.wrap{width:min(1120px,92%);margin:auto}
+.gold{color:var(--gold)}
+.muted{color:var(--muted)}
+.section{padding:85px 0}
+.section-head{text-align:center;margin-bottom:35px}
+.section-head h2{font-size:clamp(28px,5vw,45px);margin:10px 0}
+.section-head p{color:var(--muted);max-width:600px;margin:auto}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:11px;color:var(--gold);letter-spacing:2px;
+}
+.eyebrow:before,.eyebrow:after{
+  content:"";width:22px;height:1px;background:var(--gold);
+}
+.divider{
+  width:100px;height:1px;margin:20px auto;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent);
+}
+.btn{
+  border:1px solid var(--line);border-radius:999px;padding:11px 22px;
+  background:rgba(234,199,120,.08);color:var(--gold2);
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  transition:transform .25s,background .25s,box-shadow .25s;
+}
+.btn:hover{
+  transform:translateY(-3px);background:#eac77820;
+  box-shadow:0 12px 30px #eac77812;
+}
+.btn.primary{
+  background:linear-gradient(135deg,#fff1bd,#c28d3d);
+  border:0;color:#171009;font-weight:bold;
+}
+.icon-btn{
+  width:43px;height:43px;border-radius:50%;display:grid;place-items:center;
+  background:var(--glass);border:1px solid var(--line);color:var(--gold2);
+}
+
+/* Password screen */
+.gate{
+  position:fixed;inset:0;z-index:3000;display:grid;place-items:center;
+  padding:22px;background:radial-gradient(ellipse,#20142b,#08070c 72%);
+  transition:opacity .6s,visibility .6s;
+}
+.gate.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.gate-box{
+  width:min(420px,100%);text-align:center;padding:32px 25px;
+  border:1px solid var(--line);border-radius:28px;
+  background:#100d18dd;backdrop-filter:blur(18px);box-shadow:var(--shadow);
+  animation:rise .8s both;
+}
+.emblem{
+  width:85px;height:85px;margin:0 auto 20px;border-radius:50%;
+  display:grid;place-items:center;font-size:38px;color:var(--gold);
+  border:1px solid #eac77877;
+  box-shadow:0 0 40px #eac77820,inset 0 0 25px #eac77810;
+  animation:glow 3s ease-in-out infinite alternate;
+}
+.gate h1{font-size:29px;margin:8px 0}
+.gate p{font-size:14px;color:var(--muted)}
+.gate input{
+  width:100%;padding:14px;margin:14px 0;text-align:center;
+  letter-spacing:5px;color:white;background:#08070c;
+  border:1px solid var(--line);border-radius:13px;
+}
+.gate .btn{width:100%}
+.error{color:#ff9eae;font-size:13px;min-height:27px}
+
+/* Intro */
+.intro{
+  min-height:100svh;display:none;place-items:center;text-align:center;
+  padding:75px 0;overflow:hidden;
+}
+.orbit{width:200px;height:200px;margin:0 auto 25px;position:relative;display:grid;place-items:center}
+.orbit:before,.orbit:after{
+  content:"";position:absolute;inset:4px;border:1px solid #eac77877;
+  border-radius:50%;animation:spin 15s linear infinite;
+}
+.orbit:after{inset:22px;border-style:dashed;animation-direction:reverse;animation-duration:21s}
+.orbit-core{
+  width:120px;height:120px;border-radius:50%;display:grid;place-items:center;
+  font-size:57px;background:radial-gradient(circle at 30% 25%,#fff2c6,#b27a31 48%,#24180f 80%);
+  box-shadow:0 0 55px #eac77840,inset -12px -12px 24px #0008;
+  animation:float 4s ease-in-out infinite;
+}
+.orbit-star{position:absolute;color:var(--gold);font-size:20px}
+.orbit-star:nth-child(2){top:10px;right:17px}
+.orbit-star:nth-child(3){bottom:12px;left:15px}
+.intro h1{
+  font-size:clamp(45px,10vw,88px);line-height:1.2;margin:10px 0 20px;
+  color:var(--gold2);
+  background:linear-gradient(120deg,#fff5d1,#d7a54d,#fff0bd);
+  -webkit-background-clip:text;background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+.intro p{max-width:620px;margin:0 auto 28px;color:#c9bfce}
+.actions{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.scroll-note{margin-top:40px;font-size:11px;letter-spacing:2px;color:#93899d}
+.scroll-note span{display:block;font-size:24px;color:var(--gold);animation:bob 1.5s infinite}
+
+/* Navigation */
+#app{display:none}
+#app.visible{display:block;animation:fade .8s both}
+.nav{
+  position:sticky;top:0;z-index:100;
+  background:#08070cd9;backdrop-filter:blur(18px);
+  border-bottom:1px solid #ffffff0d;
+}
+.nav-inner{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:15px}
+.brand{font-size:18px;font-weight:bold;color:var(--gold2);white-space:nowrap}
+.nav-links{display:flex;gap:16px;align-items:center}
+.nav-links a{text-decoration:none;color:#d6cbdc;font-size:12px;white-space:nowrap}
+.nav-links a:hover{color:var(--gold)}
+@media(max-width:650px){
+  .nav-inner{flex-wrap:wrap;padding:10px 0}
+  .nav-links{order:3;width:100%;justify-content:center;gap:13px}
+  .nav-links a{font-size:10px}
+}
+
+/* Hero */
+.hero{padding:65px 0 25px}
+.hero-card{
+  position:relative;overflow:hidden;border:1px solid var(--line);
+  border-radius:30px;padding:clamp(25px,6vw,55px);
+  background:linear-gradient(135deg,#ffffff0c,#ffffff03);
+  box-shadow:var(--shadow);transform-style:preserve-3d;
+}
+.hero-card:before{
+  content:"";position:absolute;left:-100px;top:-180px;width:330px;height:330px;
+  border-radius:50%;background:#eac77815;filter:blur(35px);
+}
+.hero-card h2{font-size:clamp(30px,6vw,54px);line-height:1.4;margin:15px 0}
+.hero-card p{max-width:760px;color:#c8bfce}
+.signature{color:var(--gold2);font-size:18px;margin-top:20px}
+.badges{display:flex;gap:9px;flex-wrap:wrap;margin-top:20px}
+.badge{padding:6px 12px;border:1px solid var(--line);border-radius:50px;color:#e8d8b3;font-size:12px}
+
+/* Favorites */
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px}
+.card{
+  overflow:hidden;border:1px solid #ffffff13;border-radius:22px;
+  background:var(--glass);transform-style:preserve-3d;
+  transition:border-color .3s,box-shadow .3s;
+}
+.card:hover{border-color:var(--line);box-shadow:0 20px 45px #0005}
+.card-visual{
+  height:195px;position:relative;display:grid;place-items:center;overflow:hidden;
+  background:radial-gradient(circle,#eac77821,transparent 65%),#100d17;
+}
+.card-visual:before{
+  content:"";position:absolute;width:140px;height:140px;border-radius:50%;
+  border:1px solid #eac77844;
+}
+.card-visual .emoji{font-size:65px;position:relative}
+.card-visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.card-body{padding:18px}
+.card-body h3{color:var(--gold2);margin:0 0 6px;font-size:19px}
+.card-body p{color:var(--muted);font-size:13px;margin:0}
+@media(max-width:700px){.cards{grid-template-columns:1fr 1fr}.card-visual{height:165px}}
+@media(max-width:450px){.cards{grid-template-columns:1fr}.card-visual{height:190px}}
+
+/* Gallery */
+.gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.photo-card{
+  position:relative;aspect-ratio:4/5;min-height:170px;overflow:hidden;
+  border-radius:18px;border:1px solid #eac77820;
+  background:linear-gradient(145deg,#21182b,#100d16);
+  padding:0;cursor:pointer;transition:transform .3s,border-color .3s;
+}
+.photo-card:hover{transform:translateY(-5px);border-color:var(--gold)}
+.photo-card img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;transition:transform .6s}
+.photo-card:hover img{transform:scale(1.07)}
+.photo-overlay{
+  position:absolute;inset:45% 0 0;display:flex;align-items:flex-end;
+  padding:14px;background:linear-gradient(transparent,#000c);color:white;font-size:13px;
+}
+.photo-number{position:absolute;top:10px;right:10px;background:#08070cbb;border-radius:20px;padding:3px 9px;font-size:11px}
+.empty-state{grid-column:1/-1;text-align:center;padding:30px 18px;border:1px dashed var(--line);border-radius:18px;color:var(--muted)}
+@media(max-width:600px){.gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}}
+
+/* Music */
+.music-panel{
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+  padding:23px;border:1px solid var(--line);border-radius:24px;
+  background:linear-gradient(120deg,#eac77810,#ffffff04);
+}
+.music-disc{
+  width:80px;height:80px;flex:0 0 80px;border-radius:50%;
+  display:grid;place-items:center;font-size:27px;
+  background:repeating-radial-gradient(circle,#19141e 0 5px,#2b2331 6px 9px);
+  border:3px solid #b68d47;box-shadow:0 0 22px #eac77820;
+}
+.music-disc.playing{animation:spin 5s linear infinite}
+.music-info{flex:1;min-width:150px}
+.music-info strong{display:block;color:var(--gold2);font-size:17px}
+.music-info small{color:var(--muted)}
+.music-controls{display:flex;gap:9px;align-items:center;flex-wrap:wrap}
+.volume-control{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+input[type=range]{accent-color:var(--gold);width:95px}
+.visualizer{height:38px;display:flex;align-items:center;gap:4px;margin-top:10px}
+.visualizer span{width:4px;height:7px;border-radius:4px;background:var(--gold);opacity:.65}
+.visualizer.active span{animation:wave .7s ease-in-out infinite alternate}
+.visualizer span:nth-child(2n){animation-delay:.15s}
+.visualizer span:nth-child(3n){animation-delay:.3s}
+
+/* Audio */
+.audio-list{display:grid;gap:12px;max-width:850px;margin:auto}
+.audio-item{
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  padding:15px;border:1px solid #ffffff12;border-radius:17px;background:var(--glass);
+}
+.audio-icon{width:45px;height:45px;flex:0 0 45px;display:grid;place-items:center;border-radius:14px;background:#eac77813;color:var(--gold);font-size:21px}
+.audio-meta{flex:1;min-width:100px}
+.audio-meta strong{display:block;color:#f3e8d3;font-size:14px}
+.audio-meta small{color:var(--muted);font-size:11px}
+.audio-item audio{width:100%;max-width:300px;height:38px}
+@media(max-width:650px){.audio-item audio{max-width:none}}
+
+/* Surprise */
+.surprise-box{
+  text-align:center;border:1px solid var(--line);border-radius:28px;
+  padding:38px 20px;position:relative;overflow:hidden;
+  background:radial-gradient(ellipse,#eac77814,transparent 70%);
+}
+.gift{font-size:68px;display:block;filter:drop-shadow(0 0 22px #eac77830)}
+.surprise-message{
+  display:none;max-width:680px;margin:25px auto 0;padding:22px;
+  border:1px solid var(--line);border-radius:18px;background:#0003;
+  animation:rise .6s both;
+}
+.surprise-message.open{display:block}
+.surprise-message h3{font-size:26px;color:var(--gold)}
+.surprise-message p{color:#ddd4e0}
+
+/* Lightbox */
+.lightbox{
+  position:fixed;inset:0;z-index:1400;display:none;align-items:center;
+  justify-content:center;padding:18px;background:#030207f2;backdrop-filter:blur(12px);
+}
+.lightbox.open{display:flex}
+.lightbox-inner{width:min(850px,100%);text-align:center;position:relative}
+.lightbox img{max-width:100%;max-height:72svh;object-fit:contain;border-radius:13px}
+.lightbox-caption{color:var(--gold2);margin-top:12px}
+.lightbox-index{color:var(--muted);font-size:12px}
+.lightbox-close{position:absolute;left:0;top:-48px}
+.lightbox-controls{display:flex;justify-content:center;gap:12px;margin-top:15px}
+
+.toast{
+  position:fixed;bottom:22px;left:50%;z-index:4000;
+  transform:translate(-50%,20px);opacity:0;pointer-events:none;
+  background:#17111d;color:var(--gold2);border:1px solid var(--line);
+  padding:11px 18px;border-radius:50px;box-shadow:var(--shadow);
+  transition:.3s;width:max-content;max-width:90%;text-align:center;
+}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+#backTop{
+  position:fixed;right:17px;bottom:20px;z-index:90;
+  opacity:0;pointer-events:none;transform:translateY(10px);transition:.3s;
+}
+#backTop.show{opacity:1;pointer-events:auto;transform:translateY(0)}
+footer{padding:35px 0 45px;text-align:center;border-top:1px solid #ffffff0c;color:#968b9e;font-size:12px}
+footer strong{color:var(--gold)}
+.reveal{opacity:0;transform:translateY(22px);transition:opacity .8s,transform .8s}
+.reveal.in-view{opacity:1;transform:translateY(0)}
+
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes glow{from{box-shadow:0 0 20px #eac77815}to{box-shadow:0 0 45px #eac77840}}
+@keyframes rise{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+@keyframes aurora{from{transform:translate(-2%,1%) scale(1)}to{transform:translate(2%,-2%) scale(1.08)}}
+@keyframes wave{from{height:5px}to{height:30px}}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
+}
+</style>
+</head>
+
+<body>
+<canvas id="space"></canvas>
+<div class="aurora"></div>
+<div id="progress"></div>
+<canvas id="confetti"></canvas>
+
+<section class="gate" id="gate">
+  <form class="gate-box" id="gateForm">
+    <div class="emblem">✦</div>
+    <span class="eyebrow">A PRIVATE UNIVERSE</span>
+    <h1>أهلًا بك في <span class="gold">عالم أحمد</span></h1>
+    <p>هناك حكاية جميلة تنتظرك خلف هذا الباب.</p>
+    <input id="password" type="password" inputmode="numeric"
+      autocomplete="off" placeholder="••••••••" required aria-label="كلمة المرور">
+    <button class="btn primary" type="submit">افتح عالم المفاجآت ✨</button>
+    <div class="error" id="gateError" aria-live="polite"></div>
+    <small class="muted">A little universe made just for you.</small>
+  </form>
+</section>
+
+<section class="intro" id="intro">
+  <div class="wrap">
+    <div class="orbit">
+      <span class="orbit-star">✦</span>
+      <span class="orbit-star">✧</span>
+      <div class="orbit-core">🎂</div>
+    </div>
+    <span class="eyebrow">A DAY WRITTEN IN THE STARS</span>
+    <h1>Ahmed Today</h1>
+    <p>في يوم مختلف عن كل الأيام، اتجمعت النجوم علشان تحتفل بشخص يستحق الفرح والنجاح وكل الحاجات الجميلة اللي في الدنيا.</p>
+    <div class="actions">
+      <button class="btn primary" id="enterExperience">ادخل عالم أحمد ✨</button>
+      <button class="btn" id="introMusic">♫ شغّل الموسيقى</button>
+    </div>
+    <div class="scroll-note">YOUR SPECIAL DAY<span>⌄</span></div>
+  </div>
+</section>
+
+<div id="app">
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <div class="brand">✦ Ahmed <span class="gold">Today</span></div>
+      <div class="nav-links">
+        <a href="#home">البداية</a>
+        <a href="#favorites">المفضلات</a>
+        <a href="#gallery">الذكريات</a>
+        <a href="#musicSection">الموسيقى</a>
+        <a href="#voice">الصوتيات</a>
+        <a href="#surprise">المفاجأة</a>
+      </div>
+      <button class="icon-btn" id="headerMusic" aria-label="تشغيل أو إيقاف الموسيقى">♫</button>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero wrap" id="home">
+      <div class="hero-card" id="heroCard">
+        <div class="hero-top gold">✦ رسالة خاصة من الأوس ✦</div>
+        <h2>كل سنة وأنت طيب يا <span class="gold">حماد</span> 🤍</h2>
+        <p>النهارده مش مجرد تاريخ في التقويم، ده يوم اتولد فيه شخص يستاهل كل خير. أتمنى سنتك الجديدة تكون مليانة نجاح وضحك وراحة بال، وتحقق فيها كل حاجة نفسك فيها.</p>
+        <p>مهما الأيام تتغير، خليك دايمًا واثق في نفسك ومتمسك بأحلامك. أتمنى تشوف نفسك في المكان اللي بتحلم بيه، وتفضل حواليك الناس اللي بتحبك بجد.</p>
+        <div class="signature">من الأوس إلى حماد، بكل الحب ✨</div>
+        <div class="badges">
+          <span class="badge">✦ يوم مميز</span>
+          <span class="badge">♡ صداقة</span>
+          <span class="badge">∞ ذكريات</span>
+          <span class="badge">★ أحلام كبيرة</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section wrap reveal" id="favorites">
+      <div class="section-head">
+        <span class="eyebrow">THINGS YOU LOVE</span>
+        <h2>عالم <span class="gold">حماد</span></h2>
+        <div class="divider"></div>
+        <p>حاجات ليها مكانة خاصة في عالمك.</p>
+      </div>
+
+      <div class="cards">
+        <article class="card tilt-card">
+          <div class="card-visual">
+            <span class="emoji">⚽</span>
+            <img id="messiImage" alt="ميسي" hidden>
+          </div>
+          <div class="card-body"><h3>ليونيل ميسي</h3><p>موهبة استثنائية ولمسات بتخلّي المستحيل ممكن.</p></div>
+        </article>
+
+        <article class="card tilt-card">
+          <div class="card-visual">
+            <span class="emoji">🔵🔴</span>
+            <img id="barcelonaImage" alt="برشلونة" hidden>
+          </div>
+          <div class="card-body"><h3>برشلونة</h3><p>شغف كروي ولحظات تاريخية لا تُنسى.</p></div>
+        </article>
+
+        <article class="card tilt-card">
+          <div class="card-visual">
+            <span class="emoji">🏹</span>
+            <img id="zamalekImage" alt="الزمالك" hidden>
+          </div>
+          <div class="card-body"><h3>الزمالك</h3><p>عشق وانتماء وفرحة بطعم مختلف.</p></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section wrap reveal" id="gallery">
+      <div class="section-head">
+        <span class="eyebrow">MOMENTS THAT MATTER</span>
+        <h2>معرض <span class="gold">الذكريات</span></h2>
+        <div class="divider"></div>
+        <p>كل صورة حكاية، وكل ذكرى ليها إحساسها الخاص.</p>
+      </div>
+      <div class="gallery" id="galleryGrid">
+        <div class="empty-state">اضغط دخول لبدء تحميل الصور ✨</div>
+      </div>
+      <p class="muted" style="text-align:center;font-size:12px">
+        عدد الصور: <span class="gold" id="galleryCount">0</span>
+      </p>
+    </section>
+
+    <section class="section wrap reveal" id="musicSection">
+      <div class="section-head">
+        <span class="eyebrow">A SOUNDTRACK FOR YOUR DAY</span>
+        <h2>موسيقى <span class="gold">اللحظة</span></h2>
+        <div class="divider"></div>
+        <p>شغّل الموسيقى وخلي الأجواء تكمل الحكاية.</p>
+      </div>
+
+      <div class="music-panel">
+        <div class="music-disc" id="musicDisc">♫</div>
+        <div class="music-info">
+          <strong>Ahmed Today — Birthday Edition</strong>
+          <small id="musicStatus">اضغط تشغيل لبدء الموسيقى</small>
+          <div class="visualizer" id="visualizer" aria-hidden="true"></div>
+        </div>
+        <div class="music-controls">
+          <button class="btn primary" id="playMusic">▶ تشغيل</button>
+          <button class="btn" id="pauseMusic">Ⅱ إيقاف</button>
+          <label class="volume-control">الصوت
+            <input id="volume" type="range" min="0" max="100" value="35">
+            <span id="volumeValue">35%</span>
+          </label>
+        </div>
+      </div>
+      <p class="muted" style="text-align:center;font-size:12px;margin-top:12px">
+        لو لم تعمل الموسيقى، تأكد من اسم الملف ومكانه.
+      </p>
+    </section>
+
+    <section class="section wrap reveal" id="voice">
+      <div class="section-head">
+        <span class="eyebrow">WORDS FROM THE HEART</span>
+        <h2>رسائل <span class="gold">صوتية</span></h2>
+        <div class="divider"></div>
+        <p>التسجيلات الموجودة في مجلد الصوتيات.</p>
+      </div>
+      <div class="audio-list" id="audioList">
+        <div class="empty-state">اضغط دخول لبدء تجهيز التسجيلات.</div>
+      </div>
+    </section>
+
+    <section class="section wrap reveal" id="surprise">
+      <div class="surprise-box">
+        <span class="gift">🎁</span>
+        <span class="eyebrow">ONE LAST THING</span>
+        <h2 style="font-size:clamp(28px,5vw,42px)">لسه في <span class="gold">مفاجأة</span> مستنياك!</h2>
+        <p class="muted">افتح الهدية اللي معمولة مخصوص ليك.</p>
+        <button class="btn primary" id="openSurprise">افتح هديتك 🎉</button>
+        <div class="surprise-message" id="surpriseMessage">
+          <h3>يا حماد، دي أمنية من القلب 🤍</h3>
+          <p>أتمنى السنة الجديدة من عمرك تكون بداية لحاجات أعظم من كل اللي فات. ربنا يفرّح قلبك ويوفقك في كل خطوة ويكتب لك أيام تستاهل تفتكرها بابتسامة.</p>
+          <p class="gold">كل سنة وأنت بخير، وكل سنة وأنت أقرب لأحلامك ✨</p>
+          <div class="signature">— الأوس ❤️</div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    صُنعت بكل الحب من أجل <strong>حماد</strong> ✦
+    <br>Ahmed Today · A little universe made just for you.
+  </footer>
+</div>
+
+<button class="icon-btn" id="backTop" aria-label="العودة للأعلى">↑</button>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="عارض الصور">
+  <div class="lightbox-inner">
+    <button class="icon-btn lightbox-close" id="closeLightbox" aria-label="إغلاق">✕</button>
+    <img id="lightboxImage" alt="صورة من الذكريات">
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+    <div class="lightbox-index" id="lightboxIndex"></div>
+    <div class="lightbox-controls">
+      <button class="btn" id="prevPhoto">→ السابقة</button>
+      <button class="btn" id="nextPhoto">التالية ←</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+"use strict";
+
+(() => {
+  const $ = id => document.getElementById(id);
+  const PASSWORD = "16102010";
+  const PHOTO_EXTENSIONS = ["jpg","jpeg","png","webp","gif","bmp"];
+  const MAX_PHOTOS = 100;
+  const MAX_AUDIO = 30;
+  const reducedMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  let photos = [];
+  let currentPhoto = 0;
+  let music = null;
+  let toastTimer;
+  let loadingStarted = false;
+  let spaceFrame = 0;
+  let lastFrame = 0;
+  let resizeTimer;
+  let touchStartX = 0;
+
+  /* Notifications */
+  function toast(message) {
+    const el = $("toast");
+    el.textContent = message;
+    el.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => el.classList.remove("show"), 3000);
+  }
+
+  /* Password */
+  $("gateForm").addEventListener("submit", event => {
+    event.preventDefault();
+
+    if ($("password").value !== PASSWORD) {
+      $("gateError").textContent = "كلمة المرور غير صحيحة، حاول مرة أخرى.";
+      $("password").value = "";
+      $("password").focus();
+      return;
+    }
+
+    $("gateError").textContent = "";
+    $("gate").classList.add("hidden");
+    $("intro").style.display = "grid";
+
+    setTimeout(() => {
+      $("gate").style.display = "none";
+    }, 650);
+  });
+
+  /* Start */
+  $("enterExperience").addEventListener("click", async () => {
+    $("intro").style.display = "none";
+    $("app").classList.add("visible");
+
+    if (!loadingStarted) {
+      loadingStarted = true;
+      loadGallery();
+      loadFavorites();
+      loadAudioFiles();
+    }
+
+    // محاولة التشغيل بعد ضغطة المستخدم؛ المتصفح قد يسمح بها أو يرفضها.
+    startMusic();
+
+    setTimeout(() => {
+      $("home").scrollIntoView({
+        behavior: reducedMotion ? "auto" : "smooth"
+      });
+    }, 80);
+  });
+
+  /* Background music */
+  function getMusic() {
+    if (!music) {
+      music = new Audio("./AhmadToday.mp3");
+      music.loop = true;
+      music.preload = "auto";
+      music.volume = Number($("volume").value) / 100;
+
+      music.addEventListener("playing", () => {
+        $("musicStatus").textContent = "الموسيقى تعمل الآن ♪";
+        $("musicDisc").classList.add("playing");
+        $("visualizer").classList.add("active");
+      });
+
+      music.addEventListener("pause", () => {
+        $("musicStatus").textContent = "الموسيقى متوقفة";
+        $("musicDisc").classList.remove("playing");
+        $("visualizer").classList.remove("active");
+      });
+
+      music.addEventListener("error", () => {
+        $("musicStatus").textContent =
+          "تعذر فتح AhmadToday.mp3 — تحقق من المسار والاسم.";
+        $("musicDisc").classList.remove("playing");
+        $("visualizer").classList.remove("active");
+        console.error("Music error:", music.error);
+      });
+    }
+    return music;
+  }
+
+  async function startMusic() {
+    try {
+      await getMusic().play();
+    } catch (error) {
+      $("musicStatus").textContent =
+        "اضغط تشغيل وتأكد من وجود AhmadToday.mp3.";
+      console.error("Music playback failed:", error);
+    }
+  }
+
+  $("playMusic").addEventListener("click", startMusic);
+  $("introMusic").addEventListener("click", startMusic);
+  $("headerMusic").addEventListener("click", () => {
+    if (music && !music.paused) music.pause();
+    else startMusic();
+  });
+  $("pauseMusic").addEventListener("click", () => {
+    if (music) music.pause();
+  });
+
+  $("volume").addEventListener("input", () => {
+    const value = Number($("volume").value);
+    $("volumeValue").textContent = value + "%";
+    if (music) music.volume = value / 100;
+  });
+
+  // موجات زخرفية متحركة، دون معالجة صوت فعلية.
+  for (let i = 0; i < 22; i++) {
+    $("visualizer").appendChild(document.createElement("span"));
+  }
+
+  /* Image loading */
+  function testImage(url, timeout = 3500) {
+    return new Promise(resolve => {
+      const img = new Image();
+      let done = false;
+
+      const finish = result => {
+        if (done) return;
+        done = true;
+        clearTimeout(timer);
+        img.onload = null;
+        img.onerror = null;
+        resolve(result);
+      };
+
+      const timer = setTimeout(() => finish(null), timeout);
+      img.onload = () => finish(img.naturalWidth > 0 ? url : null);
+      img.onerror = () => finish(null);
+      img.src = url;
+
+      if (img.complete) {
+        finish(img.naturalWidth > 0 ? url : null);
+      }
+    });
+  }
+
+  async function findImage(base) {
+    for (const ext of PHOTO_EXTENSIONS) {
+      const result = await testImage(base + "." + ext);
+      if (result) return result;
+    }
+    return null;
+  }
+
+  async function loadGallery() {
+    const grid = $("galleryGrid");
+    grid.innerHTML = '<div class="empty-state">جاري تحميل الذكريات ✨</div>';
+    photos = [];
+
+    let misses = 0;
+
+    for (let i = 1; i <= MAX_PHOTOS; i++) {
+      let found = null;
+
+      for (const ext of PHOTO_EXTENSIONS) {
+        found = await testImage(`./photos/A${i}.${ext}`);
+        if (found) break;
+      }
+
+      if (found) {
+        photos.push({src:found,title:"ذكرى رقم " + i});
+        misses = 0;
+      } else {
+        misses++;
+      }
+
+      $("galleryCount").textContent = photos.length;
+
+      if (photos.length > 0 && misses >= 8) break;
+    }
+
+    renderGallery();
+
+    if (photos.length) {
+      toast("تم العثور على " + photos.length + " صورة");
+    }
+  }
+
+  function renderGallery() {
+    const grid = $("galleryGrid");
+    $("galleryCount").textContent = photos.length;
+
+    if (!photos.length) {
+      grid.innerHTML = `
+        <div class="empty-state">
+          <div style="font-size:35px">🌌</div>
+          لم يتم العثور على صور.<br>
+          <small>تحقق من مجلد photos وأسماء الصور مثل A1.jpg.</small>
+        </div>`;
+      return;
+    }
+
+    grid.innerHTML = "";
+
+    photos.forEach((photo,index) => {
+      const button = document.createElement("button");
+      button.className = "photo-card";
+      button.type = "button";
+      button.setAttribute("aria-label","عرض " + photo.title);
+
+      const img = document.createElement("img");
+      img.src = photo.src;
+      img.alt = photo.title;
+      img.loading = "lazy";
+
+      const number = document.createElement("span");
+      number.className = "photo-number";
+      number.textContent = String(index+1).padStart(2,"0");
+
+      const overlay = document.createElement("span");
+      overlay.className = "photo-overlay";
+      overlay.textContent = photo.title;
+
+      button.append(img,number,overlay);
+      button.addEventListener("click",() => openLightbox(index));
+      grid.appendChild(button);
+    });
+  }
+
+  /* Favorites */
+  async function loadFavorites() {
+    const items = [
+      {id:"messiImage",base:"./photos/messi"},
+      {id:"barcelonaImage",base:"./photos/Brsa"},
+      {id:"zamalekImage",base:"./photos/Zmalek"}
+    ];
+
+    for (const item of items) {
+      const path = await findImage(item.base);
+      if (!path) continue;
+
+      const img = $(item.id);
+      img.src = path;
+      img.hidden = false;
+
+      const emoji = img.parentElement.querySelector(".emoji");
+      if (emoji) emoji.hidden = true;
+    }
+  }
+
+  /* Lightbox */
+  function openLightbox(index) {
+    if (!photos.length) return;
+    currentPhoto = (index + photos.length) % photos.length;
+    updateLightbox();
+    $("lightbox").classList.add("open");
+    document.body.style.overflow = "hidden";
+  }
+
+  function updateLightbox() {
+    const photo = photos[currentPhoto];
+    if (!photo) return;
+
+    $("lightboxImage").src = photo.src;
+    $("lightboxCaption").textContent = photo.title;
+    $("lightboxIndex").textContent =
+      `${currentPhoto+1} / ${photos.length}`;
+  }
+
+  function closeLightbox() {
+    $("lightbox").classList.remove("open");
+    document.body.style.overflow = "";
+  }
+
+  function movePhoto(direction) {
+    if (!photos.length) return;
+    currentPhoto = (currentPhoto + direction + photos.length) % photos.length;
+    updateLightbox();
+  }
+
+  $("closeLightbox").addEventListener("click",closeLightbox);
+  $("prevPhoto").addEventListener("click",() => movePhoto(-1));
+  $("nextPhoto").addEventListener("click",() => movePhoto(1));
+
+  $("lightbox").addEventListener("click",event => {
+    if (event.target === $("lightbox")) closeLightbox();
+  });
+
+  document.addEventListener("keydown",event => {
+    if (!$("lightbox").classList.contains("open")) return;
+    if (event.key === "Escape") closeLightbox();
+    if (event.key === "ArrowRight") movePhoto(1);
+    if (event.key === "ArrowLeft") movePhoto(-1);
+  });
+
+  $("lightbox").addEventListener("touchstart",event => {
+    touchStartX = event.changedTouches[0].screenX;
+  },{passive:true});
+
+  $("lightbox").addEventListener("touchend",event => {
+    const delta = event.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(delta) > 55) movePhoto(delta > 0 ? -1 : 1);
+  },{passive:true});
+
+  /* Audio files */
+  async function loadAudioFiles() {
+    const list = $("audioList");
+    list.innerHTML = '<div class="empty-state">جاري تجهيز التسجيلات الصوتية...</div>';
+
+    const found = [];
+    let misses = 0;
+
+    for (let i = 1; i <= MAX_AUDIO; i++) {
+      const path = `./audio/A${i}.mp3`;
+      const result = await checkAudio(path);
+
+      if (result) {
+        found.push({src:result,number:i});
+        misses = 0;
+      } else {
+        misses++;
+      }
+
+      if (found.length > 0 && misses >= 5) break;
+    }
+
+    list.innerHTML = "";
+
+    if (!found.length) {
+      list.innerHTML = `
+        <div class="empty-state">
+          لم يتم العثور على تسجيلات قابلة للتشغيل.<br>
+          <small>تأكد من وجود ملفات A1.mp3 وA2.mp3 داخل audio.</small>
+        </div>`;
+      return;
+    }
+
+    found.forEach(item => {
+      const row = document.createElement("div");
+      row.className = "audio-item";
+
+      const icon = document.createElement("div");
+      icon.className = "audio-icon";
+      icon.textContent = "♫";
+
+      const meta = document.createElement("div");
+      meta.className = "audio-meta";
+
+      const title = document.createElement("strong");
+      title.textContent = "رسالة صوتية " + item.number;
+
+      const subtitle = document.createElement("small");
+      subtitle.textContent = "تسجيل خاص لليوم المميز";
+
+      const player = document.createElement("audio");
+      player.controls = true;
+      player.preload = "none";
+      player.src = item.src;
+
+      player.addEventListener("loadedmetadata",() => {
+        if (Number.isFinite(player.duration)) {
+          const min = Math.floor(player.duration/60);
+          const sec = Math.floor(player.duration%60);
+          subtitle.textContent =
+            `المدة ${min}:${String(sec).padStart(2,"0")}`;
+        }
+      });
+
+      player.addEventListener("error",() => {
+        subtitle.textContent = "تعذر تشغيل الملف؛ تحقق من صيغته ومساره.";
+      });
+
+      meta.append(title,subtitle);
+      row.append(icon,meta,player);
+      list.appendChild(row);
+    });
+
+    toast("تم تجهيز " + found.length + " تسجيل صوتي");
+  }
+
+  function checkAudio(path) {
+    return new Promise(resolve => {
+      const audio = new Audio();
+      let settled = false;
+
+      const finish = result => {
+        if (settled) return;
+        settled = true;
+        clearTimeout(timer);
+        audio.removeEventListener("loadedmetadata",onLoaded);
+        audio.removeEventListener("error",onError);
+        try {
+          audio.pause();
+          audio.removeAttribute("src");
+          audio.load();
+        } catch (_) {}
+        resolve(result);
+      };
+
+      const onLoaded = () => finish(path);
+      const onError = () => finish(null);
+      const timer = setTimeout(() => finish(null),2500);
+
+      audio.preload = "metadata";
+      audio.addEventListener("loadedmetadata",onLoaded);
+      audio.addEventListener("error",onError);
+      audio.src = path;
+
+      try { audio.load(); } catch (_) { finish(null); }
+    });
+  }
+
+  /* Surprise and confetti */
+  $("openSurprise").addEventListener("click",() => {
+    const box = $("surpriseMessage");
+    const open = !box.classList.contains("open");
+
+    box.classList.toggle("open",open);
+    $("openSurprise").textContent = open ? "اقفل المفاجأة ♡" : "افتح هديتك 🎉";
+
+    if (open) {
+      launchConfetti();
+      box.scrollIntoView({
+        behavior:reducedMotion ? "auto" : "smooth",
+        block:"nearest"
+      });
+    }
+  });
+
+  let confettiFrame = 0;
+
+  function launchConfetti() {
+    const canvas = $("confetti");
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const dpr = Math.min(devicePixelRatio || 1,2);
+    canvas.width = Math.floor(innerWidth*dpr);
+    canvas.height = Math.floor(innerHeight*dpr);
+    canvas.style.width = innerWidth+"px";
+    canvas.style.height = innerHeight+"px";
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+
+    const colors = ["#eac778","#fff0bd","#dca34f","#fff","#b99bd8","#f4a9b8"];
+    const pieces = Array.from({length:130},() => ({
+      x:Math.random()*innerWidth,
+      y:-20-Math.random()*innerHeight*.4,
+      vx:(Math.random()-.5)*3,
+      vy:2+Math.random()*4,
+      size:2+Math.random()*4,
+      rotation:Math.random()*6,
+      spin:(Math.random()-.5)*.12,
+      color:colors[Math.floor(Math.random()*colors.length)],
+      life:150
+    }));
+
+    cancelAnimationFrame(confettiFrame);
+
+    function frame() {
+      ctx.clearRect(0,0,innerWidth,innerHeight);
+      let alive = 0;
+
+      for (const p of pieces) {
+        if (p.life<=0 || p.y>innerHeight+30) continue;
+        alive++;
+        p.x+=p.vx;
+        p.y+=p.vy;
+        p.vy+=.02;
+        p.rotation+=p.spin;
+        p.life--;
+
+        ctx.save();
+        ctx.translate(p.x,p.y);
+        ctx.rotate(p.rotation);
+        ctx.globalAlpha=Math.min(1,p.life/25);
+        ctx.fillStyle=p.color;
+        ctx.fillRect(-p.size,-p.size/2,p.size*2,p.size);
+        ctx.restore();
+      }
+
+      if (alive) confettiFrame=requestAnimationFrame(frame);
+      else ctx.clearRect(0,0,innerWidth,innerHeight);
+    }
+
+    frame();
+  }
+
+  /* Animated stars */
+  const space = $("space");
+  const ctx = space.getContext("2d");
+  let stars = [];
+
+  function resizeSpace() {
+    const dpr = Math.min(devicePixelRatio || 1,2);
+
+    space.width=Math.floor(innerWidth*dpr);
+    space.height=Math.floor(innerHeight*dpr);
+    space.style.width=innerWidth+"px";
+    space.style.height=innerHeight+"px";
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+
+    const count=Math.min(140,Math.floor(innerWidth*innerHeight/8500));
+
+    stars=Array.from({length:count},() => ({
+      x:Math.random()*innerWidth,
+      y:Math.random()*innerHeight,
+      radius:.4+Math.random()*1.3,
+      alpha:.2+Math.random()*.7,
+      phase:Math.random()*6,
+      speed:.003+Math.random()*.012,
+      drift:(Math.random()-.5)*.1
+    }));
+  }
+
+  function drawSpace(time) {
+    if (document.hidden || reducedMotion) {
+      spaceFrame=0;
+      return;
+    }
+
+    if (time-lastFrame<32) {
+      spaceFrame=requestAnimationFrame(drawSpace);
+      return;
+    }
+
+    lastFrame=time;
+    ctx.clearRect(0,0,innerWidth,innerHeight);
+
+    for (const s of stars) {
+      s.phase+=s.speed;
+      s.x+=s.drift;
+
+      if (s.x<0) s.x=innerWidth;
+      if (s.x>innerWidth) s.x=0;
+
+      const alpha=s.alpha*(.55+.45*Math.sin(s.phase));
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.radius,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,229,177,${alpha})`;
+      ctx.fill();
+
+      if (s.radius>1.2) {
+        ctx.beginPath();
+        ctx.moveTo(s.x-4,s.y);
+        ctx.lineTo(s.x+4,s.y);
+        ctx.moveTo(s.x,s.y-4);
+        ctx.lineTo(s.x,s.y+4);
+        ctx.strokeStyle=`rgba(234,199,120,${alpha*.4})`;
+        ctx.lineWidth=.5;
+        ctx.stroke();
+      }
+    }
+
+    spaceFrame=requestAnimationFrame(drawSpace);
+  }
+
+  resizeSpace();
+
+  if (!reducedMotion && ctx) {
+    spaceFrame=requestAnimationFrame(drawSpace);
+  }
+
+  window.addEventListener("resize",() => {
+    clearTimeout(resizeTimer);
+    resizeTimer=setTimeout(() => {
+      resizeSpace();
+      if (!reducedMotion && !document.hidden && !spaceFrame) {
+        spaceFrame=requestAnimationFrame(drawSpace);
+      }
+    },150);
+  });
+
+  document.addEventListener("visibilitychange",() => {
+    if (document.hidden) {
+      cancelAnimationFrame(spaceFrame);
+      spaceFrame=0;
+    } else if (!reducedMotion && ctx && !spaceFrame) {
+      spaceFrame=requestAnimationFrame(drawSpace);
+    }
+  });
+
+  /* Reveal on scroll */
+  const revealItems=document.querySelectorAll(".reveal");
+
+  if ("IntersectionObserver" in window && !reducedMotion) {
+    const observer=new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("in-view");
+          observer.unobserve(entry.target);
+        }
+      });
+    },{threshold:.1});
+
+    revealItems.forEach(el => observer.observe(el));
+  } else {
+    revealItems.forEach(el => el.classList.add("in-view"));
+  }
+
+  /* 3D card tilt */
+  if (!reducedMotion && matchMedia("(pointer:fine)").matches) {
+    document.querySelectorAll(".tilt-card,#heroCard").forEach(card => {
+      card.addEventListener("pointermove",event => {
+        const rect=card.getBoundingClientRect();
+        const x=(event.clientX-rect.left)/rect.width;
+        const y=(event.clientY-rect.top)/rect.height;
+        card.style.transform=
+          `perspective(1000px) rotateX(${(.5-y)*4}deg) rotateY(${(x-.5)*5}deg)`;
+      });
+
+      card.addEventListener("pointerleave",() => {
+        card.style.transform="";
+      });
+    });
+  }
+
+  /* Scroll progress and top button */
+  function updateScrollUI() {
+    const doc=document.documentElement;
+    const max=doc.scrollHeight-doc.clientHeight;
+    $("progress").style.width=(max>0 ? doc.scrollTop/max*100 : 0)+"%";
+    $("backTop").classList.toggle("show",doc.scrollTop>450);
+  }
+
+  addEventListener("scroll",updateScrollUI,{passive:true});
+
+  $("backTop").addEventListener("click",() => {
+    scrollTo({top:0,behavior:reducedMotion ? "auto" : "smooth"});
+  });
+
+})();
+</script>
+</body>
+</html>
